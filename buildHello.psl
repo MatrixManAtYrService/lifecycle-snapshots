@@ -1,0 +1,2 @@
+cmd /c "`"${env:VS140COMNTOOLS}../../../MSBuild/14.0/Bin/MSBuild.exe`" ./build/Hello.sln /p:Configuration=Release /p:Platform=x64 /m"
+cmd /c "`"${env:VS140COMNTOOLS}../../../MSBuild/14.0/Bin/MSBuild.exe`" ./build/Hello.sln /p:Configuration=Debug /p:Platform=x64 /m"
