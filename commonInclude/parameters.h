@@ -1,8 +1,6 @@
 #ifndef parameters_h
 #define parameters_h
 
-
-
 #include <string>
 #include <iostream>
 
@@ -10,23 +8,37 @@
 #include <boost/program_options.hpp>
 
 #define HELP_PARAM "help"
+#define COW_PARAM "cow"
+#define WHALE_PARAM "whale"
 #define MESSAGE_PARAM "message"
 #define MESSAGE_DEFAULT "Hello World!"
+
+// for help with boost::program_options see:
+// http://www.boost.org/doc/libs/1_63_0/doc/html/program_options/tutorial.html
+
+enum class Animal {Cow, Whale, Terminal};
 
 struct CLI
 {
     std::string message;
+    Animal speaker;
 
-    CLIparams(int argc, char** argv)
+    CLI(int argc, char** argv)
     {
+        bool isCow = false;
+        bool isWhale = false;
+
 		// define the CLI parameters
 		namespace po = boost::program_options;
 		po::options_description desc("Usage:");
 		desc.add_options()
 			(HELP_PARAM, "print this message")
-			(HTTP_PORT_PARAM, po::value<std::string>(&message)->default_value(MESSAGE_DEFAULT), "provide a custom message")
+			(MESSAGE_PARAM, po::value<std::string>(&message)->default_value(MESSAGE_DEFAULT), "provide a custom message")
+			(COW_PARAM, po::bool_switch(&isCow), "hear from a cow")
+			(WHALE_PARAM, po::bool_switch(&isWhale), "hear from a whale")
 			;
 
+        // read the CLI parameters
 		po::variables_map vm;
 		try
 		{
@@ -43,13 +55,24 @@ struct CLI
 		}
 		catch (const boost::program_options::error& e)
 		{
-			// if something went wrong print it
+			// if something went wrong print it and exit
 			std::cerr << e.what() << std::endl;
 			getchar();
 			exit(1);
 		}
+
+
+        // CLI post-processing
+        if (isCow)
+            speaker = Animal::Cow;
+
+        else if (isWhale)
+            speaker = Animal::Whale;
+
+        else
+            speaker = Animal::Terminal;
     };
-}
+};
 
 
 #endif

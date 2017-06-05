@@ -1,0 +1,3 @@
+[submodule "FakeIt"]
+	path = externalInclude/FakeIt
+	url = https://github.com/eranpeer/FakeIt

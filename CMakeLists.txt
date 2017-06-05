@@ -25,6 +25,7 @@ elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wfatal-errors") # tell gcc to stop after first error
 endif()
 
+# If building in release mode, optimize all the way and include no debug symbols
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 
 # Global include directories (for shared stuff)
@@ -34,9 +35,9 @@ SET(INCLUDE_EXT_DIRS "${PROJECT_ROOT}/externalInclude")     # External headers (
 add_definitions(-DBOOST_ALL_DYN_LINK)
 
 IF(WIN32)
-    # set local boost location
     # (cmake typically finds boost without help in the linux case)
 
+    # set local boost location
     # example system variable values:
     # BoostRoot : C:\usr\local\Boost
     # BoostVer  : 1_62
@@ -60,10 +61,11 @@ IF(WIN32)
 ENDIF()
 
 # Gather shared headers
-# (must be added explicitly to appear in a folder in the solution explorer)
+# (must be added explicitly to appear nicely in the VS Solution Explorer)
 file(GLOB COMMON_HEADERS "${PROJECT_ROOT}/commonInclude/*.h")
 source_group("Header Files\\Common Includes" FILES ${COMMON_HEADERS})
 
+# Use boost unit_test_framework
 enable_testing()
 find_package(Boost COMPONENTS unit_test_framework program_options REQUIRED)
 list(APPEND INCLUDE_EXT_DIRS ${Boost_INCLUDE_DIRS})
@@ -78,9 +80,6 @@ include_directories(${INCLUDE_DIRS})
 include_directories(SYSTEM ${INCLUDE_EXT_DIRS})
 # Visual Studio doesn't respect the above distinction,
 # use '#pragma warning(disable:<num>)' just before the offending header to work around this
-
-set (TEST_INCLUDE "${PROJECT_ROOT}/testInclude")
-file(GLOB_RECURSE TEST_HEADERS "${TEST_INCLUDE}/*.h")
 
 # Add Compile Targets
 # ===================
@@ -127,10 +126,8 @@ macro(AddExecutable _exeName _sourcesList _includeDirs _linkList)
         target_include_directories(${_exeName} PUBLIC ${_includeDir})
     endforeach()
 
-    # Linking every exe to the whole set of boost libraries is both overkill and a fine example of M@ being lazy
-    # probably better to sort out which ones are neede where
     set_target_properties(${_exeName} PROPERTIES LINKER_LANGUAGE CXX)
-    target_link_libraries(${_exeName} ${_linkLibs} ${Boost_LIBRARIES})
+    target_link_libraries(${_exeName} ${_linkLibs})
 
     # Walk the to-link list
     foreach(_linkDepend ${_linkDepends})
@@ -169,7 +166,7 @@ macro(AddLibrary _libName _sourcesList _testSourcesList _linkList)
         endif()
     endforeach()
 
-
+    # create the build target
     set(libName "${_libName}")
     add_library(${libName}
         "${_sourcesList};${_moduleHeaders};${COMMON_HEADERS};${SHARED_UTILITY_HEADERS};${SHARED_INTERFACE_HEADERS};${SHARED_DATATRANSPORT_HEADERS}"
@@ -179,19 +176,23 @@ macro(AddLibrary _libName _sourcesList _testSourcesList _linkList)
     set_target_properties(${libName} PROPERTIES LINKER_LANGUAGE CXX)
     target_link_libraries(${libName} ${_linkLibs})
 
+
+    # if test sources were defined
     if (NOT "${_testSourcesList}" STREQUAL "")
         # create a test executable
         add_executable("${libName}_test" "${_testSourcesList};${TEST_HEADERS};${COMMON_HEADERS};${_moduleHeaders}")
-        target_include_directories("${libName}_test" PUBLIC "${_moduleInclude};${TEST_INCLUDE};${_linkIncludes}")
+        target_include_directories("${libName}_test" PUBLIC "${_moduleInclude};${_linkIncludes}")
         set_target_properties("${libName}_test" PROPERTIES LINKER_LANGUAGE CXX)
 
         # link to everything that the library-under-test links to
         list(APPEND _test_link_libraries ${libName})
         list(APPEND _test_link_libraries ${_linkLibs})
+        list(APPEND _test_link_libraries ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
         target_link_libraries("${libName}_test" ${_test_link_libraries})
         set_target_properties("${libName}_test" PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TEST_BIN})
 
-        # configure ctest based on boost unit test structure
+        # configure ctest to call the test executable the way boost likes it
+        # thanks to Eric Scott Barr for this (https://eb2.co/blog/2015/06/driving-boost-dot-test-with-cmake/)
         foreach(_sourceFile ${_testSourcesList})
         file(READ "${_sourceFile}" SOURCE_FILE_CONTENTS)
             string(REGEX MATCHALL "BOOST_AUTO_TEST_CASE\\( *([A-Za-z_0-9]+) *\\)"
@@ -222,22 +223,35 @@ endmacro(AddLibrary)
 #     "test;sources;go;here"
 #     "Link;To;These")
 #
-# empty test sources list => Don't create a test project
-# "moduleInclude/<LibName>" will be automatically added as an include directory
-#
 # AddExecutable("ExeName"
 #     "sources;go;here"
 #     "include;directories"
 #     "Link;To;These")
 
-AddLibrary("Cow"
-    "src/cowsay.cpp"
-    "test/cowsay.cpp"
+# Uncomment below to dump variables
+# (useful for finding variables that contain link targets)
+
+#get_cmake_property(_variableNames VARIABLES)
+#foreach (_variableName ${_variableNames})
+#    message(STATUS "${_variableName}=${${_variableName}}")
+#endforeach()
+
+AddLibrary("Message"
+    "src/messageHolder.cpp"
+    ""
     "")
 
-MESSAGE(STATUS ${BOOST_PROGRAMOPTIONS})
+AddLibrary("Cow"
+    "src/cowsay.cpp"
+    "test/cowsay.cpp"   # a test executable will be generated
+    "")
+
+AddLibrary("Whale"
+    "src/whalesay.cpp"
+    ""
+    "")
 
 AddExecutable("Hello"
     "src/hello.cpp"
-    "moduleInclude/Cow"
-    "Cow")
+    "moduleInclude/Cow;moduleInclude/Whale;moduleInclude/Message"
+    "Cow;Whale;Message;${Boost_PROGRAM_OPTIONS_LIBRARY}")
