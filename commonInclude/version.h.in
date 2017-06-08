@@ -1,0 +1,18 @@
+#ifndef VERSION_H
+#define VERSION_H
+
+#define MAJOR ${MAJOR}
+#define MINOR ${MINOR}
+#define PATCH ${PATCH}
+#define REVISION ${REVISION}
+#define COMMIT "${COMMIT}"
+
+#include <iostream>
+
+void PrintVersion()
+{
+    // to be overwritten by CMakeLists.txt
+    std::cout << MAJOR << '.' << MINOR << '.' << PATCH << '.' << REVISION << " " << COMMIT << std::endl;
+}
+
+#endif

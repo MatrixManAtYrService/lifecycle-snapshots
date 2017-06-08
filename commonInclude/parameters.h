@@ -6,8 +6,10 @@
 
 #pragma warning(disable:4505) //https://svn.boost.org/trac/boost/ticket/11920
 #include <boost/program_options.hpp>
+#include "version.h"
 
 #define HELP_PARAM "help"
+#define VERSION_PARAM "version"
 #define COW_PARAM "cow"
 #define WHALE_PARAM "whale"
 #define MESSAGE_PARAM "message"
@@ -27,12 +29,14 @@ struct CLI
     {
         bool isCow = false;
         bool isWhale = false;
+        bool printVersion = false;
 
 		// define the CLI parameters
 		namespace po = boost::program_options;
 		po::options_description desc("Usage:");
 		desc.add_options()
-			(HELP_PARAM, "print this message")
+			(HELP_PARAM, "print this message and exit")
+			(VERSION_PARAM, po::bool_switch(&printVersion), "print the version and exit")
 			(MESSAGE_PARAM, po::value<std::string>(&message)->default_value(MESSAGE_DEFAULT), "provide a custom message")
 			(COW_PARAM, po::bool_switch(&isCow), "hear from a cow")
 			(WHALE_PARAM, po::bool_switch(&isWhale), "hear from a whale")
@@ -60,6 +64,12 @@ struct CLI
 			getchar();
 			exit(1);
 		}
+
+        if (printVersion)
+        {
+            PrintVersion();
+            exit(0);
+        }
 
 
         // CLI post-processing

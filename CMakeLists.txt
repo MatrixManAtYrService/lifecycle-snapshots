@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.4.0)
-project(Hello C CXX)
+project(hello C CXX)
 message(STATUS "Processing ${CMAKE_CURRENT_LIST_FILE}")
 
 # Gather context
@@ -59,6 +59,18 @@ IF(WIN32)
     endforeach()
 
 ENDIF()
+
+# TODO: populate these values with real version numbers
+SET(MAJOR "1")
+SET(MINOR "2")
+SET(PATCH "3")
+SET(REVISION "5")
+SET(COMMIT "2fd4e1c67a2d28fced849ee1bb76e7391b93eb12")
+MESSAGE("Version: ${MAJOR}.${MINOR}.${PATCH}.${REVISION} ${COMMIT}")
+configure_file("${PROJECT_ROOT}/commonInclude/version.h.in" "${PROJECT_ROOT}/commonInclude/version.h")
+SET(VERSION_STR "${MAJOR}.${MINOR}.${PATCH}.${REVISION}") 
+
+
 
 # Gather shared headers
 # (must be added explicitly to appear nicely in the VS Solution Explorer)
@@ -236,22 +248,51 @@ endmacro(AddLibrary)
 #    message(STATUS "${_variableName}=${${_variableName}}")
 #endforeach()
 
-AddLibrary("Message"
+AddLibrary("message"
     "src/messageHolder.cpp"
     ""
     "")
 
-AddLibrary("Cow"
+AddLibrary("cow"
     "src/cowsay.cpp"
     "test/cowsay.cpp"   # a test executable will be generated
     "")
 
-AddLibrary("Whale"
+AddLibrary("whale"
     "src/whalesay.cpp"
     ""
     "")
 
-AddExecutable("Hello"
+AddExecutable("hello"
     "src/hello.cpp"
-    "moduleInclude/Cow;moduleInclude/Whale;moduleInclude/Message"
-    "Cow;Whale;Message;${Boost_PROGRAM_OPTIONS_LIBRARY}")
+    "moduleInclude/cow;moduleInclude/whale;moduleInclude/message"
+    "cow;whale;message;${Boost_PROGRAM_OPTIONS_LIBRARY}")
+
+install (TARGETS cow whale message DESTINATION "/usr/lib")
+install (TARGETS hello DESTINATION "/usr/bin")
+
+IF(NOT WIN32)
+	# determine architecture
+	execute_process(COMMAND
+	  dpkg-architecture
+		-qDEB_HOST_ARCH
+	  OUTPUT_VARIABLE
+		CMAKE_DEB_HOST_ARCH
+	  OUTPUT_STRIP_TRAILING_WHITESPACE
+	)
+
+	SET(CPACK_GENERATOR "DEB")
+
+	set(CPACK_DEBIAN_PACKAGE_NAME "hello")
+	set(CPACK_DEBIAN_PACKAGE_MAINTAINER "MatrixManAtYrService (github)")
+	set(CPACK_PACKAGE_FILE_NAME "hello_${VERSION_STR}")
+	set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "says 'Hello World'")
+	set(CPACK_DEBIAN_PACKAGE_VERSION ${VERSION_STR})
+	set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE ${CMAKE_DEB_HOST_ARCH})
+    #set(CPACK_DEBIAN_PACKAGE_DEPENDS "libboost-chrono1.58.0 (>=1.58.0+dfsg-5ubuntu3.1), libboost-log1.58.0 (>=1.58.0+dfsg-5ubuntu3.1), libboost-date-time1.58.0 (>=1.58.0+dfsg-5ubuntu3.1), libboost-filesystem1.58.0 (>=1.58.0+dfsg-5ubuntu3.1), libboost-program-options1.58.0 (>=1.58.0+dfsg-5ubuntu3.1), libboost-regex1.58.0 (>=1.58.0+dfsg-5ubuntu3.1), libboost-system1.58.0 (>=1.58.0+dfsg-5ubuntu3.1), libboost-thread1.58.0 (>=1.58.0+dfsg-5ubuntu3.1), libboost-test1.58.0 (>=1.58.0+dfsg-5ubuntu3.1), libboost-coroutine1.58.0 (>=1.58.0+dfsg-5ubuntu3.1), libboost-context1.58.0 (>=1.58.0+dfsg-5ubuntu3.1), libsqlite3-0 (>=3.11.0-1ubuntu1), libssl1.0.0 (>=1.0.2g-1ubuntu4.6), sqlite3 (>=3.11.0-1ubuntu1)")
+    set(CPACK_DEBIAN_PACKAGE_DEPENDS "libboost-program-options1.58.0 (>=1.58.0+dfsg-5ubuntu3.1), libboost-test1.58.0 (>=1.58.0+dfsg-5ubuntu3.1)")
+	#set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA "pre/post install config stuff here")
+
+ENDIF()
+
+INCLUDE(CPack)
