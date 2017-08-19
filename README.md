@@ -60,7 +60,7 @@ If test sources are provided to AddLibrary, a test library called `test_<library
 
 When I'm doing [dependency injection](https://en.wikipedia.org/wiki/Dependency_injection) I keep the meat of my progam in its libraries, and the primary role of executables is instantiating concrete instances for injection.  This is why the AddExecutable macro allows for the addition of arbitrary include directories, and AddLibrary does not.
 
-Each library gets its own "private" pile of implementation headers, available only to the executables that instantiate classes from those libraries.  CMake will happily let you include implementation headers across different boundaries, but my Macro's will not.  This serves as a reminder: If you wanted that functionality in separate libraries, whatever interfaces you have defined should be sufficient for cross-library communication.  If libraries refer to each other's implementations then why have separate libraries at all?
+Each library gets its own "private" directory of implementation headers, available only to the executables that instantiate classes from those libraries.  CMake will happily let you include implementation headers across different boundaries, but my Macro's will not.  This serves as a reminder: If you wanted that functionality in separate libraries, whatever interfaces you have defined should be sufficient for cross-library communication.  If libraries refer to each other's implementations then why have separate libraries at all?
 
 #### Command-Line-Argument-Parsing
 
