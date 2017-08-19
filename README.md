@@ -45,8 +45,6 @@ This can be a hassle, but I believe that it's a price worth paying.
 
 [Boost-test](http://www.boost.org/doc/libs/1_64_0/libs/test/doc/html/boost_test/intro.html) is a library that makes it easy to create high quality unit tests.  There is a macro in [CMakeLists.txt](CMakeLists.txt) called AddLibrary that creates libraries in a way that makes creating corresponding test libraries easy.
 
---------------------
-
 In addition to boost-test, [FakeIt](https://github.com/eranpeer/FakeIt) is included.  This lets you quickly create dummy-objects which appear to the object-under-test to be one of their dependencies, but are actually under your complete control.
 
 See [test/cowsay.cpp](test/cowsay.cpp) for an example of how this works.  Keep in mind that if your interfaces are clean enough, you shouldnt need to go digging around in the internals of a class to figure out how its behavior should be mocked.
