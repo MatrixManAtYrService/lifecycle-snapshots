@@ -145,7 +145,7 @@ Navigate to your build directory (indicated by the output of `./configure.sh`) a
 
 ##### Visual Studio
 
-Consider installing the [Boost Test Adapter](https://marketplace.visualstudio.com/items?itemName=ETASGmbH.BoostUnitTestAdapter] for visual studio.  I have had mixed results, but when it works it works well.
+Consider installing the [Boost Test Adapter](https://marketplace.visualstudio.com/items?itemName=ETASGmbH.BoostUnitTestAdapter) for visual studio.  I have had mixed results, but when it works it works well.
 
 In the solution explorer, right click on the project `cow_test` and select debugging > command line parameters.
 Use these parameters:
