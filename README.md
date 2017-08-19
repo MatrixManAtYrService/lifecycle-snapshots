@@ -84,7 +84,7 @@ Each library gets its own "private" directory of implementation headers, availab
     
 #### Versioned
 
-Also in [CMakeLists.txt](CMakeLists.txt] there is some code that will grab the current git sha1 and insert it into [commonInclude/version.h](commonInclude/version.h) along with the version number, which is currently hard-coded into [CMakeLists.txt](CMakeLists.txt).  If your version numbers come from an automated build system, you can easily supply these to CMake and have them used by `--version` instead.
+Also in [CMakeLists.txt](CMakeLists.txt) there is some code that will grab the current git sha1 and insert it into [commonInclude/version.h](commonInclude/version.h) along with the version number, which is currently hard-coded into [CMakeLists.txt](CMakeLists.txt).  If your version numbers come from an automated build system, you can easily supply these to CMake and have them used by `--version` instead.
 
 #### Installable
 
