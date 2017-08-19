@@ -60,8 +60,9 @@ else
     echo "Usage: configure [OPTION]"
     echo ""
     echo  "<none>                   Display this message"
-    echo  "-g                       Configure build directory for gnu make (defaults to debug)"
-    echo  "-v                       Configure build directory for Visual Studio 2015 (Win64)"
+    echo  "-g                       Configure debug build directory for gnu make (./debug)"
+    echo  "-gr                      Configure release build directory for gnu make (./release)"
+    echo  "-v                       Configure build directory for Visual Studio 2015 (Win64) (./build)"
 
 fi
 

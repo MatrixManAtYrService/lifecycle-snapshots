@@ -32,6 +32,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 SET(INCLUDE_DIRS "${PROJECT_ROOT}/commonInclude")           # Shared between modules (our code)
 SET(INCLUDE_EXT_DIRS "${PROJECT_ROOT}/externalInclude")     # External headers (not our code)
 
+# prefer shared libraries to static linking
 add_definitions(-DBOOST_ALL_DYN_LINK)
 
 IF(WIN32)
@@ -60,12 +61,19 @@ IF(WIN32)
 
 ENDIF()
 
+# Add custom module path
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_ROOT}/cmake")
+
+# get git commit sha1
+include(GetGitRevisionDescription)
+get_git_head_revision(GIT_REFSPEC GIT_SHA1)
+
 # TODO: populate these values with real version numbers
 SET(MAJOR "1")
 SET(MINOR "2")
 SET(PATCH "3")
 SET(REVISION "5")
-SET(COMMIT "2fd4e1c67a2d28fced849ee1bb76e7391b93eb12")
+SET(COMMIT ${GIT_SHA1})
 MESSAGE("Version: ${MAJOR}.${MINOR}.${PATCH}.${REVISION} ${COMMIT}")
 configure_file("${PROJECT_ROOT}/commonInclude/version.h.in" "${PROJECT_ROOT}/commonInclude/version.h")
 SET(VERSION_STR "${MAJOR}.${MINOR}.${PATCH}.${REVISION}") 
