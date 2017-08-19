@@ -95,8 +95,7 @@ Towards the end of [CMakeLists.txt](CMakeLists.txt) you will find the code neces
 
 ### Install Dependencies
 
-In addition to git (duh), you'll need to install boost-program-options, boost-test, and cmake  
-If you expect to use other boost libraries, you might as well install them all.
+In addition to git (duh), you'll need to install boost-program-options, boost-test, and cmake.
 
 #### Linux
 
