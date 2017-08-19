@@ -97,7 +97,7 @@ Towards the end of [CMakeLists.txt](CMakeLists.txt) you will find the code neces
 
 In addition to git (duh), you'll need to install boost-program-options, boost-test, and cmake.
 
-#### Linux
+##### Linux
 
 On my (ubuntu) install, the following command does the trick:
     
@@ -107,7 +107,7 @@ Or if you want to install the whole boost suite:
 
     apt install cmake libboost-all-dev
 
-#### Windows
+##### Windows
 
 See the [boost documentation](http://www.boost.org/doc/libs/1_60_0/more/getting_started/windows.html).
 
@@ -133,19 +133,19 @@ It will tell you how to use it.  Since I want a debug build using GNU Make, I ex
 
 ### Build
 
-#### GNU make
+##### GNU make
 
 Navigate to your build directory (indicated by the output of `./configure.sh`) and type `make`
 
-#### Visual Studio
+##### Visual Studio
 
 `./configure.sh` should have generated `./build/hello.sln` Open it with visual studio and build it.
 
 ### Run Tests
 
-#### Visual Studio
+##### Visual Studio
 
-Consider installing the [Boost Test Adapter](https://marketplace.visualstudio.com/items?itemName=ETASGmbH.BoostUnitTestAdapter] for visual studio.  I have had mixed results, but when it works it works well.
+Consider installing the [Boost Test Adapter](https://marketplace.visualstudio.com/items?itemName=ETASGmbH.BoostUnitTestAdapter) for visual studio.  I have had mixed results, but when it works it works well.
 
 In the solution explorer, right click on the project `cow_test` and select debugging > command line parameters.
 Use these parameters:
@@ -154,7 +154,7 @@ Use these parameters:
 
 This will run all tests with names that start with Cow (you can modify the expression as necesary).  You can read more about these options [here](http://www.boost.org/doc/libs/1_46_1/libs/test/doc/html/utf/user-guide/runtime-config/reference.html).
 
-#### Linux
+##### Linux
 
 You have a few options.  To run all of the tests at once:
  1. navigate to your build directory (`./debug` or `./release` depending on how you invoked  `./configure.sh`) and run `make test`
