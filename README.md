@@ -1,6 +1,6 @@
 # hello-cpp-linwin
 
-hello-cpp-linwin is a cross platform, unit tested, dependency-injected, command-line-argument parsing, versioned, installable, hello world implementation.
+hello-cpp-linwin is a cross platform, unit tested, dependency-injected, command-line-argument parsing, versioned, installable, hello world implementation.  Seriously.
 
 ## Why?
 
