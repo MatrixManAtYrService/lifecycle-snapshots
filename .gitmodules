@@ -1,3 +1,6 @@
 [submodule "FakeIt"]
 	path = externalInclude/FakeIt
 	url = https://github.com/eranpeer/FakeIt
+[submodule "hello-cpp-linwin"]
+	path = hello-cpp-linwin
+	url = https://github.com/MatrixManAtYrService/hello-cpp-linwin
