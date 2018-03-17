@@ -24,6 +24,9 @@ printf "\n"
 cd "$DIR"
 docker build . -t "hello:latest" && printf "Done building 'build'\n\n"
 
+# clean up binary
+rm "$DIR/hello.deb"
+
 echo "Things to try:"
 echo "docker run --rm -it hello /bin/bash"
 echo "docker run --rm hello --whale --message \"Containers are cool\""

@@ -1,13 +1,8 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-for image in "$(docker images | egrep "hello(run|dev|build)?")" ; do
-    image_name=$(echo "$image" | awk {'print $1'})
-    echo $image_name
-    if [[ -z $image_name ]] ; then
-        for container in "$(docker ps -a | grep $image_name)" ; do
-            container_id=$(echo $container | awk {'print $1'})
-            echo -n "$image_name.$container_id"
-            docker rm -v "$container_id"
-        done
+echo $(docker ps -a | tail -n +2 | egrep "hello" | awk {'print $1'}) | while read container_id; do
+    if [ ! -z "$container_id" ] ; then
+        docker rm "$container_id" | sed 's/^/    /'
     fi
 done
