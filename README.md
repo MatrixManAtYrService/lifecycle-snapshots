@@ -59,7 +59,7 @@ Docker looks at the inputs to a build to determine wheter it needs to update the
 
 'develop' depends on 'run', so it calls 'run' before it builds a snapshot.  This ensures that the run snapshot is available for 'develop' to layer on.
 
-This kind of dependency management is what 'make' is for, there's probably a more elegant way.  When I become a 'make' wizard, I'll implement it here.
+This kind of dependency management is what `make` is for, there's probably a more elegant way.  When I become a `make` wizard, I'll implement it here.
 
 ## Container and image storage
 Try these commands:
