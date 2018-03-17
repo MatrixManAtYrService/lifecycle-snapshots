@@ -8,28 +8,38 @@ This repo is a template for using docker to build software in containers.  It bu
 
 Ultimately, an image is created for each of these.  There is no reason that you should pick four snapshots (how about some for tests?), but that's how this example works.
 
-## Run
+### Run
 This encapsulates anything that you expect to already be installed on the user's machine.  If you refer somebody to [run/Dockerfile](run/Dockerfile) they can see what your run environment expectations are.
 
-## Develop 
+### Develop 
 This houses the code and any tools you rely on for development.  New developers can look at [develop/Dockerfile](develop/Dockerfile) to get ideas about how they should configure their development environments--or they can develop right in the container.
 
-## Build
+### Build
 When docker builds [build/Dockerfile](build/Dockerfile) this image, it executes your build.  Anything that relies on your build outputs can execute in containers based on this image
 
-## Deploy
+### Deploy
 This is what you should push to dockerhub so that users can run your software without worrying about dependencies (except for docker itself).  The way to run your software is documented at the end of [deploy/Dockerfile](deploy/Dockerfile).
 
 # Running it
 
+### Docker
+
 You'll need docker installed (or running elsewhere) on something unixy.  Windows users ought to be able to follow this pattern, but they can't base their 'run' image on debian like I have.
 
-After cloning the repo, try these commands:
+### Submodules
 
-./run/snap.sh
-./develop/snap.sh
-./build/snap.sh
-./deploy/snap.sh
+This repo contains a submodule.  Its submodule also contains a submodule.  To resolve them, run this after cloning it:
+
+    git submodule --init --recursive
+
+### Making Snapshots
+
+Then, try these commands:
+
+    ./run/snap.sh
+    ./develop/snap.sh
+    ./build/snap.sh
+    ./deploy/snap.sh
 
 # Things to notice
 
