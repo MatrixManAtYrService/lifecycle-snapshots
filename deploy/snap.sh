@@ -6,7 +6,7 @@ indent(){
     sed 's/^/    /'
 }
 
-echo "Taking \'build\' snapshot (required for \'deploy\')"
+echo "Taking 'build' snapshot (required for 'deploy')"
 "$DIR/../build/snap.sh" | indent
 
 printf "\nExtracting binaries from hellobuild\n"
