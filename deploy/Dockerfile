@@ -1,12 +1,11 @@
-FROM hellodev
+# This file creates a container for deployment, it starts with the runtime environment
+FROM hellorun
 
-RUN apt-get clean && apt-get update
+# Copies the installer
+COPY hello*.deb /root
 
-RUN apt-get install -y \
-libboost-program-options1.58.0
+# Installs it
+RUN apt-get install -y /root/hello*.deb
 
-COPY hello*.deb /root/
-
-RUN apt-get install /root/hello*.deb
-
+# And configures containers to call the installed program
 ENTRYPOINT ["hello"]

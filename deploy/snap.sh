@@ -22,7 +22,7 @@ docker rm "$build_container" 1> /dev/null
 printf "\n"
 
 cd "$DIR"
-docker build . -t "hello:latest" && printf "Done building 'build'\n\n"
+docker build . -t "hello" && printf "Done building 'build'\n\n"
 
 # clean up binary
 rm "$DIR/hello.deb"
