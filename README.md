@@ -30,7 +30,7 @@ You'll need docker installed (or running elsewhere) on something unixy.  Windows
 
 This repo contains a submodule.  Its submodule also contains a submodule.  To resolve them, run this after cloning it:
 
-    git submodule --init --recursive
+    git submodule update --init --recursive
 
 ### Making Snapshots
 
