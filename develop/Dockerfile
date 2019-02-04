@@ -9,7 +9,7 @@ build-essential \
 make \
 cmake \
 libboost-test-dev \
-libboost-program-options1.58-dev
+libboost-program-options1.65-dev
 
 # include the code
 COPY hello-cpp-linwin/ /usr/local/src/hello
