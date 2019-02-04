@@ -7,9 +7,14 @@ apt-utils \
 git \
 build-essential \
 make \
-cmake \
 libboost-test-dev \
 libboost-program-options1.65-dev
+
+# cmake can't find boost 1.65 unless it is at 3.9.3 or newer
+# see: https://stackoverflow.com/questions/42123509/cmake-finds-boost-but-the-imported-targets-not-available-for-boost-version
+# and: https://askubuntu.com/questions/952429/is-there-a-good-ppa-for-cmake-backports
+RUN apt-get install -y python-pip && \
+        pip install --upgrade cmake
 
 # include the code
 COPY hello-cpp-linwin/ /usr/local/src/hello

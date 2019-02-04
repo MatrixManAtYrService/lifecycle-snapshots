@@ -28,7 +28,7 @@ docker build . -t "hello" && printf "Done building 'build'\n\n"
 rm "$DIR/hello.deb"
 
 echo "Things to try:"
-echo "docker run --rm -it --entrypoint=/bin/bash hello"
+echo "docker run --rm hello"
 echo "docker run --rm hello --whale --message \"Containers are cool\""
 
 cd "$ORIG"

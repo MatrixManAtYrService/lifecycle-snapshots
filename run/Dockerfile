@@ -1,5 +1,5 @@
 # This dockerfile defines the expected runtime environment before the project is installed
-FROM ubuntu:latest
+FROM ubuntu:18.04
 
 # Be sure to install any runtime dependencies
 RUN apt-get clean && apt-get update && apt-get install -y \
