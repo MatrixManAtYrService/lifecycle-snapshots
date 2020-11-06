@@ -1,5 +1,7 @@
 # Lifecycle Snapshots
 
+**Warning:** The pattern explained below aims to solve the same problems that [docker multi-stage builds](https://docs.docker.com/develop/develop-images/multistage-build/) does.  Multi-stage builds didn't exist at the time.  Nowadays you're probably better off using that feature instead.
+
 This repo is a template for using docker to build software in containers.  It builds [a fancy hello world implementation](https://github.com/MatrixManAtYrService/hello-cpp-linwin).  The build proceeds in four lifecycle snapshots:
 - Run
 - Develop
